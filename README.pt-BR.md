@@ -1,5 +1,7 @@
 # News Intelligence Engine — Versão Pública V2
 
+**Idiomas:** [English](README.md) · Português (Brasil) (esta página)
+
 Ferramenta independente para **pesquisa de notícias econômicas públicas**, com coleta configurável, deduplicação, histórico de revisões, horários de observação e dashboard local.
 
 **Escopo:** biblioteca demonstrativa de processamento de dados. Os classificadores por palavras-chave e as avaliações opcionais de IA não comprovam capacidade de prever mercados.
@@ -58,6 +60,12 @@ python -B -m news_engine review --config config.json --item-id 1 --data-dir data
 
 Essa chamada envia título e resumo à API Google. O exemplo usa perguntas públicas de classificação temática, sem previsão financeira. Sua chamada externa não foi executada nos testes offline deste pacote.
 
+## Como participar
+
+É possível contribuir relatando erros, propondo funcionalidades e enviando Pull Requests. Utilize dados sintéticos nos exemplos e nos testes. Comece pelo [guia de contribuição em português](CONTRIBUTING.pt-BR.md), ou pelo [guia em inglês](CONTRIBUTING.md).
+
+**Segurança:** nunca publique chaves de API, tokens ou dados sensíveis em Issues. Para vulnerabilidades, veja [Política de segurança em português](SECURITY.pt-BR.md) ou [Security Policy](SECURITY.md).
+
 ## Contribuições e licença
 
-Os modelos de Issues e Pull Requests estão incluídos. Consulte `CONTRIBUTING.md` e `SECURITY.md`. O projeto utiliza a [Licença MIT](LICENSE). Contribuições são bem-vindas por meio de Issues e Pull Requests, sujeitos à revisão dos mantenedores.
+Os modelos de Issues e Pull Requests estão incluídos. O projeto usa a [licença MIT](LICENSE) e segue o [Código de Conduta](CODE_OF_CONDUCT.md). Contribuições passam pela revisão dos mantenedores. Esta versão não oferece previsões financeiras validadas nem execução de operações.
