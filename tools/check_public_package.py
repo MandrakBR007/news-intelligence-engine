@@ -26,6 +26,10 @@ def audit(root: Path = ROOT) -> list[str]:
     findings = []
     for p in root.rglob("*"):
         rel = p.relative_to(root)
+        # A Git checkout always includes .git metadata. It is not release content.
+        # Ignore only the root .git metadata directory, not nested .git folders.
+        if rel.parts[0] == ".git" and not (root / ".git").is_symlink():
+            continue
         if p.is_symlink():
             findings.append(f"symlink: {rel}")
             continue
