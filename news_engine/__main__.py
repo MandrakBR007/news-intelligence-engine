@@ -4,7 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from . import api, config as config_mod, dashboard, demo, gemini_client, pipeline, queue, store, worker
+from . import api, cli_output, config as config_mod, dashboard, demo, gemini_client, pipeline, queue, store, worker
 
 
 def _open(config, data_dir):
@@ -30,7 +30,7 @@ def main(argv=None) -> int:
             p.add_argument("--batch-id", default=None)
     args = parser.parse_args(argv)
     if args.command == "demo":
-        print(json.dumps(demo.run(args.data_dir, args.config), ensure_ascii=False, indent=2))
+        print(json.dumps(cli_output.public_result(args.command, demo.run(args.data_dir, args.config)), ensure_ascii=False, indent=2))
         return 0
     config = config_mod.load_config(args.config)
     if args.command == "collect":
@@ -38,7 +38,7 @@ def main(argv=None) -> int:
         conn, _ = _open(config, args.data_dir)
         result["dashboard"] = str(dashboard.build(conn, config_mod.dashboard_path(config, args.data_dir)))
         conn.close()
-        print(json.dumps(result, ensure_ascii=False, indent=2))
+        print(json.dumps(cli_output.public_result(args.command, result), ensure_ascii=False, indent=2))
         return 0
 
     conn, db = _open(config, args.data_dir)
@@ -70,7 +70,7 @@ def main(argv=None) -> int:
             return 0
         else:
             parser.error("unrecognized command")
-        print(json.dumps(output, ensure_ascii=False, indent=2))
+        print(json.dumps(cli_output.public_result(args.command, output), ensure_ascii=False, indent=2))
         return 0
     finally:
         if args.command != "serve":
