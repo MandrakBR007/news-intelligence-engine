@@ -46,23 +46,23 @@ class RateLimitTests(unittest.TestCase):
         self.assertEqual(worker.work_once(self.conn, self.cfg, fetcher=fake_fetch, now=160)["status"], "done")
 
     def test_different_feed_not_blocked(self):
-        worker.enqueue_feeds(self.conn, self.cfg, batch_id="a")
+        self.enqueue_at("a", 100)
         self.assertEqual(worker.work_once(self.conn, self.cfg, fetcher=fake_fetch, now=100)["status"], "done")
         self.cfg["feeds"][0]["url"] = "https://another.example.org/feed.xml"
-        worker.enqueue_feeds(self.conn, self.cfg, batch_id="b")
+        self.enqueue_at("b", 100)
         self.assertEqual(worker.work_once(self.conn, self.cfg, fetcher=fake_fetch, now=101)["status"], "done")
 
     def test_default_disabled_is_backward_compatible(self):
         self.cfg["queue"]["min_feed_interval_seconds"] = 0
-        worker.enqueue_feeds(self.conn, self.cfg, batch_id="a")
+        self.enqueue_at("a", 100)
         self.assertEqual(worker.work_once(self.conn, self.cfg, fetcher=fake_fetch, now=100)["status"], "done")
-        worker.enqueue_feeds(self.conn, self.cfg, batch_id="b")
+        self.enqueue_at("b", 100)
         self.assertEqual(worker.work_once(self.conn, self.cfg, fetcher=fake_fetch, now=101)["status"], "done")
         self.assertEqual(self.conn.execute("SELECT COUNT(*) FROM feed_cooldowns").fetchone()[0], 0)
 
     def test_rejects_malformed_config_before_claiming(self):
         self.cfg["queue"]["min_feed_interval_seconds"] = "60"
-        worker.enqueue_feeds(self.conn, self.cfg, batch_id="a")
+        self.enqueue_at("a", 100)
         with self.assertRaises(ValueError):
             worker.work_once(self.conn, self.cfg, fetcher=fake_fetch, now=100)
         self.assertEqual(queue.stats(self.conn)["pending"], 1)
@@ -70,7 +70,7 @@ class RateLimitTests(unittest.TestCase):
     def test_no_source_url_in_cooldown_or_public_output(self):
         url = self.cfg["feeds"][0]["url"]
         self.assertEqual(len(rate_limit.feed_key(url)), 64)
-        worker.enqueue_feeds(self.conn, self.cfg, batch_id="a")
+        self.enqueue_at("a", 100)
         worker.work_once(self.conn, self.cfg, fetcher=fake_fetch, now=100)
         key = self.conn.execute("SELECT source_key FROM feed_cooldowns").fetchone()[0]
         self.assertNotIn("example.org", key)
