@@ -1,5 +1,7 @@
 # Contributing
 
+**Languages:** English (this guide) · [Português (Brasil)](CONTRIBUTING.pt-BR.md)
+
 Thanks for your interest. This project is intentionally small and local-first.
 
 ## Before you start
@@ -19,6 +21,13 @@ By submitting a contribution, you agree that your contribution may be distribute
 3. Keep changes focused and documented.
 4. Confirm the tests pass and no secrets are present.
 5. Open a pull request describing the problem, the change, and how you tested it.
+
+## What makes a good first contribution
+
+- Improve documentation or translate a user-facing explanation.
+- Add tests for malformed public RSS, Atom or JSON feeds using synthetic examples.
+- Improve error handling or explain metadata provenance without changing existing timestamps.
+- Suggest a feature in an Issue before starting substantial changes.
 
 ## Style
 

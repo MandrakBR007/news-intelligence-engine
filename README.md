@@ -1,5 +1,7 @@
 # News Intelligence Engine — Public V2
 
+**Languages:** English (this page) · [Português (Brasil)](README.pt-BR.md)
+
 A **local-first, extensible toolkit for public financial news and economic-event research**. It collects *user-configured* feeds, groups duplicates, keeps event revisions and observation timestamps, and provides a local dashboard. Contributions are welcome via Issues, Discussions and Pull Requests after the repository owner enables them.
 
 **Scope:** this public edition demonstrates generic data engineering, not price prediction. Keyword-based categories and AI output are research metadata, not validated forecasts. No live market integration or automated financial actions are included.
@@ -81,6 +83,12 @@ This package ships with no real feed contents, accounts, API keys, databases, lo
 
 See [SECURITY.md](SECURITY.md) and [docs/SECURITY_MODEL.md](docs/SECURITY_MODEL.md).
 
+## How to contribute
+
+Start with a [bug report](.github/ISSUE_TEMPLATE/bug_report.md), a [feature request](.github/ISSUE_TEMPLATE/feature_request.md), or a focused pull request. Reproduce an issue using synthetic data; add offline tests; and explain what changed. See [CONTRIBUTING.md](CONTRIBUTING.md) for the English guide or [CONTRIBUTING.pt-BR.md](CONTRIBUTING.pt-BR.md) for Portuguese.
+
+**Security:** Never post API keys or sensitive details in public issues. Read [SECURITY.md](SECURITY.md) ([Português](SECURITY.pt-BR.md)) for private vulnerability reports.
+
 ## Community and licensing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). This repository is licensed under the [MIT License](LICENSE). Contributions are welcome via Issues and Pull Requests; maintainers review changes before merging. See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
+This repository is licensed under the [MIT License](LICENSE). Please read the [Code of Conduct](CODE_OF_CONDUCT.md). Contributions are reviewed by maintainers before merging. The public package does not claim validated financial forecasts or unattended live integrations.

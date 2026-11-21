@@ -1,5 +1,7 @@
 # Security Policy
 
+**Languages:** English (this policy) · [Português (Brasil)](SECURITY.pt-BR.md)
+
 ## Reporting a vulnerability
 
 Please do not open a public issue containing sensitive details. Contact the
