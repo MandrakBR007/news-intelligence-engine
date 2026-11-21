@@ -32,6 +32,10 @@ news-engine demo --data-dir data
 
 O comando anterior `python -B -m news_engine` continua funcionando. Para a integração opcional e **manual** com IA, use `pip install -e ".[gemini]"`; para ferramentas de desenvolvimento, `pip install -e ".[dev]"`. Consulte as [notas de engenharia](docs/ENGINEERING_V3.md). A instalação não inicia coleta externa nem serviço automático.
 
+## Benchmark experimental de deduplicação (proposta V3)
+
+Um [benchmark sintético e offline](docs/DEDUP_BENCHMARK.md) verifica pares semelhantes e falsos agrupamentos. Execute `python -m tools.benchmark_dedup` na raiz do projeto. A opção `dedup.compare_stored_tokens` permite comparar Jaccard com textos persistidos, mas está **desativada por padrão** e não altera IDs históricos. As métricas sintéticas não representam acurácia real.
+
 ## Começando sem internet
 
 Recomendado Python 3.11+.
