@@ -22,6 +22,17 @@ The next development priorities are documented in the [V3 Roadmap (English)](doc
 - Optional **Gemini Decision 1** example for *broad topic classification only*, invoked explicitly with a CLI command; no automatic API charges.
 - Offline synthetic examples; Python standard library for the core.
 
+## Optional local installation (V2-compatible)
+
+Python 3.11+ can install the core as a local package with no mandatory runtime dependencies:
+
+```bash
+python -m pip install -e .
+news-engine demo --data-dir data
+```
+
+The original `python -B -m news_engine` commands remain supported. Optional AI support is `pip install -e ".[gemini]"` (only used for explicit `review`); developer diagnostics use `pip install -e ".[dev]"`. See [engineering notes](docs/ENGINEERING_V3.md). Installation does not start network collection or a background process.
+
 ## Requirements and offline quick start
 
 Python **3.11+** is recommended (the core uses the standard library).

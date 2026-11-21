@@ -37,5 +37,6 @@ def work_once(conn, config: dict, *, fetcher=None, now=None) -> dict:
         settings = config.get("queue", {})
         queue.fail(conn, job["id"], f"{type(exc).__name__}: {exc}",
                    max_attempts=int(settings.get("max_attempts", 3)),
-                   delay_seconds=int(settings.get("retry_delay_seconds", 120)), now=now)
+                   delay_seconds=int(settings.get("retry_delay_seconds", 120)),
+                   backoff_factor=int(settings.get("retry_backoff_factor", 1)), now=now)
         return {"status": "retry_or_dead", "job_id": job["id"], "error": type(exc).__name__}
