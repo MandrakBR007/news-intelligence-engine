@@ -52,7 +52,7 @@ def main(argv=None) -> int:
         elif args.command == "work-once":
             output = worker.work_once(conn, config)
         elif args.command == "queue-stats":
-            output = queue.stats(conn)
+            output = queue.diagnostics(conn)
         elif args.command == "review":
             if not config["gemini"].get("enabled"):
                 output = {"enabled": False, "reason": "set gemini.enabled=true to opt in"}

@@ -67,3 +67,23 @@ def fail(conn, job_id: int, error: str, *, max_attempts=3, delay_seconds=60,
 def stats(conn) -> dict:
     counts = {r['status']: r['c'] for r in conn.execute('SELECT status,COUNT(*) c FROM jobs GROUP BY status')}
     return {k: counts.get(k, 0) for k in ('pending', 'leased', 'done', 'dead')}
+
+
+def diagnostics(conn, *, now=None) -> dict:
+    """Privacy-safe numerical status only, never job payloads or feed URLs."""
+    now = time.time() if now is None else now
+    result = stats(conn)
+    row = conn.execute(
+        """SELECT
+        SUM(CASE WHEN status='pending' AND available_at<=? THEN 1 ELSE 0 END) ready,
+        SUM(CASE WHEN status='pending' AND available_at>? THEN 1 ELSE 0 END) delayed,
+        SUM(CASE WHEN status='leased' AND leased_until<=? THEN 1 ELSE 0 END) expired_leases
+        FROM jobs""",
+        (now, now, now),
+    ).fetchone()
+    result.update({
+        "ready": int(row["ready"] or 0),
+        "delayed": int(row["delayed"] or 0),
+        "expired_leases": int(row["expired_leases"] or 0),
+    })
+    return result

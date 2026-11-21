@@ -22,7 +22,7 @@ _SENSITIVE = re.compile(
 _COUNT_FIELDS = ("total", "new", "near_duplicate", "exact_duplicate",
                  "new_clusters", "new_revisions", "errors")
 _STATS_COUNTS = ("total", "clusters", "revisions", "unknown_publication_time")
-_QUEUE_FIELDS = ("pending", "leased", "done", "dead")
+_QUEUE_FIELDS = ("pending", "leased", "done", "dead", "ready", "delayed", "expired_leases")
 
 
 def _number(value):
@@ -102,7 +102,7 @@ def public_result(command, value):
                 "queue": _counts(value.get("queue"), _QUEUE_FIELDS)}
     if command == "work-once":
         status = value.get("status")
-        result = {"status": status if status in ("done", "empty", "retry_or_dead") else "error"}
+        result = {"status": status if status in ("done", "empty", "retry_or_dead", "deferred") else "error"}
         result.update(_counts(value, ("job_id",)))
         if result["status"] == "done":
             result["counts"] = _counts(value.get("counts"), _COUNT_FIELDS)
