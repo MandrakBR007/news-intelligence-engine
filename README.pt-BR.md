@@ -6,6 +6,10 @@ Ferramenta independente para **pesquisa de notícias econômicas públicas**, co
 
 **Escopo:** biblioteca demonstrativa de processamento de dados. Os classificadores por palavras-chave e as avaliações opcionais de IA não comprovam capacidade de prever mercados.
 
+## Roteiro público V3 (proposta)
+
+As próximas prioridades estão no [Roteiro V3 em português](docs/ROADMAP_V3.pt-BR.md) e no [V3 Roadmap em inglês](docs/ROADMAP_V3.md). São **propostas, não funcionalidades já entregues**. As primeiras tarefas estão nas [Issues #6–#9](https://github.com/MandrakBR007/news-intelligence-engine/issues?q=is%3Aissue+is%3Aopen+%22%5BV3%5D%22). Novas ideias podem ser discutidas em [Discussions](https://github.com/MandrakBR007/news-intelligence-engine/discussions).
+
 ## Funcionalidades
 
 - Feeds RSS 2.0, Atom 1.0 e JSON simples configurável.
