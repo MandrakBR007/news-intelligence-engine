@@ -16,8 +16,12 @@ def _normalize(item):
 
 def process_items(conn, config: dict, raw) -> dict:
     items = [_normalize(x) for x in raw]
-    existing = store.fingerprints(conn)
     dedup_cfg = config.get("dedup", {})
+    # Off by default: enabling this can change cluster assignments for near-matches.
+    use_stored_tokens = dedup_cfg.get("compare_stored_tokens", False)
+    if not isinstance(use_stored_tokens, bool):
+        raise ValueError("dedup.compare_stored_tokens must be a boolean")
+    existing = store.fingerprints(conn, include_tokens=use_stored_tokens)
     hamming_threshold = int(dedup_cfg.get("hamming_threshold", 8))
     jaccard_threshold = float(dedup_cfg.get("jaccard_threshold", 0.75))
     counts = {"total": len(items), "new": 0, "near_duplicate": 0,
@@ -52,8 +56,11 @@ def process_items(conn, config: dict, raw) -> dict:
                 counts["new_clusters"] += 1
             else:
                 counts["near_duplicate"] += 1
-            existing.append({"content_hash": rec["content_hash"], "simhash": rec["simhash"],
-                             "cluster_id": cluster})
+            entry = {"content_hash": rec["content_hash"], "simhash": rec["simhash"],
+                     "cluster_id": cluster}
+            if use_stored_tokens:
+                entry["tokens"] = fingerprint["tokens"]
+            existing.append(entry)
         else:
             counts["exact_duplicate"] += 1
     return counts

@@ -141,8 +141,21 @@ def list_items(conn, limit: int = 200) -> list[dict]:
         "ORDER BY id DESC LIMIT ?", (limit,))]
 
 
-def fingerprints(conn) -> list[dict]:
-    return [dict(r) for r in conn.execute("SELECT content_hash,simhash,cluster_id FROM items")]
+def fingerprints(conn, *, include_tokens: bool = False) -> list[dict]:
+    """Read old fingerprint fields; optionally reconstruct Jaccard tokens from local text.
+
+    No schema changes or external calls. The default preserves V2 behavior.
+    """
+    if not include_tokens:
+        return [dict(r) for r in conn.execute("SELECT content_hash,simhash,cluster_id FROM items")]
+    from .util import tokenize
+    rows = conn.execute("SELECT content_hash,simhash,cluster_id,title,summary FROM items")
+    return [
+        {"content_hash": row["content_hash"], "simhash": row["simhash"],
+         "cluster_id": row["cluster_id"],
+         "tokens": tokenize((row["title"] or "") + " " + (row["summary"] or ""))}
+        for row in rows
+    ]
 
 
 def stats(conn) -> dict:

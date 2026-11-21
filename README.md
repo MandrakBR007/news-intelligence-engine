@@ -33,6 +33,10 @@ news-engine demo --data-dir data
 
 The original `python -B -m news_engine` commands remain supported. Optional AI support is `pip install -e ".[gemini]"` (only used for explicit `review`); developer diagnostics use `pip install -e ".[dev]"`. See [engineering notes](docs/ENGINEERING_V3.md). Installation does not start network collection or a background process.
 
+## Experimental deduplication benchmark (V3 proposal)
+
+An offline, synthetic [pairwise benchmark](docs/DEDUP_BENCHMARK.md) covers near duplicates and false merges. Run `python -m tools.benchmark_dedup` from the repository root. The new optional `dedup.compare_stored_tokens` setting enables Jaccard comparison with existing stored articles; it is **off by default** and changes no historical cluster IDs. Do not interpret synthetic metrics as real-world accuracy.
+
 ## Requirements and offline quick start
 
 Python **3.11+** is recommended (the core uses the standard library).
