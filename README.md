@@ -6,6 +6,10 @@ A **local-first, extensible toolkit for public financial news and economic-event
 
 **Scope:** this public edition demonstrates generic data engineering, not price prediction. Keyword-based categories and AI output are research metadata, not validated forecasts. No live market integration or automated financial actions are included.
 
+## Public V3 roadmap (proposed)
+
+The next development priorities are documented in the [V3 Roadmap (English)](docs/ROADMAP_V3.md) and [Roteiro V3 (Português)](docs/ROADMAP_V3.pt-BR.md). These are **proposals, not released features**. Community-ready tasks are tracked in [Issues #6–#9](https://github.com/MandrakBR007/news-intelligence-engine/issues?q=is%3Aissue+is%3Aopen+%22%5BV3%5D%22). New ideas are welcome via [Discussions](https://github.com/MandrakBR007/news-intelligence-engine/discussions).
+
 ## Features
 
 - RSS 2.0, Atom 1.0 and configurable flat JSON feeds.
