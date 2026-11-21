@@ -1,5 +1,4 @@
 """Offline deterministic tests: per-feed cooldown and privacy-safe diagnostics."""
-import sqlite3
 import tempfile
 import unittest
 from pathlib import Path
@@ -23,14 +22,19 @@ class RateLimitTests(unittest.TestCase):
         self.cfg["feeds"] = [{"name": "demo", "url": "https://example.org/feed.xml"}]
         self.cfg["queue"]["min_feed_interval_seconds"] = 60
 
+    def enqueue_at(self, batch: str, now: int):
+        feed = self.cfg["feeds"][0]
+        return queue.enqueue(self.conn, "fetch_feed", {"feed": dict(feed)},
+                             batch + ":" + feed["url"], now=now)
+
     def tearDown(self):
         self.conn.close()
         self.tmp.cleanup()
 
     def test_same_feed_deferred_without_consuming_attempt(self):
-        worker.enqueue_feeds(self.conn, self.cfg, batch_id="a")
+        self.enqueue_at("a", 100)
         self.assertEqual(worker.work_once(self.conn, self.cfg, fetcher=fake_fetch, now=100)["status"], "done")
-        worker.enqueue_feeds(self.conn, self.cfg, batch_id="b")
+        self.enqueue_at("b", 100)
         second = worker.work_once(self.conn, self.cfg, fetcher=fake_fetch, now=110)
         self.assertEqual(second["status"], "deferred")
         self.assertEqual(queue.stats(self.conn)["pending"], 1)
