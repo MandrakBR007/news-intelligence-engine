@@ -36,6 +36,10 @@ O comando anterior `python -B -m news_engine` continua funcionando. Para a integ
 
 Um [benchmark sintético e offline](docs/DEDUP_BENCHMARK.md) verifica pares semelhantes e falsos agrupamentos. Execute `python -m tools.benchmark_dedup` na raiz do projeto. A opção `dedup.compare_stored_tokens` permite comparar Jaccard com textos persistidos, mas está **desativada por padrão** e não altera IDs históricos. As métricas sintéticas não representam acurácia real.
 
+## Intervalo opcional entre coletas manuais (proposta V3)
+
+A nova opção `queue.min_feed_interval_seconds` (padrão **0**, desativada) adia tarefas manuais para o mesmo feed, sem criar agendamento ou processo em segundo plano. `queue-stats` mostra apenas contagens numéricas de trabalhos prontos/adiados. Consulte as [notas técnicas](docs/RATE_LIMIT_V3.md).
+
 ## Começando sem internet
 
 Recomendado Python 3.11+.

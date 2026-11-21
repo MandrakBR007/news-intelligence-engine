@@ -37,6 +37,10 @@ The original `python -B -m news_engine` commands remain supported. Optional AI s
 
 An offline, synthetic [pairwise benchmark](docs/DEDUP_BENCHMARK.md) covers near duplicates and false merges. Run `python -m tools.benchmark_dedup` from the repository root. The new optional `dedup.compare_stored_tokens` setting enables Jaccard comparison with existing stored articles; it is **off by default** and changes no historical cluster IDs. Do not interpret synthetic metrics as real-world accuracy.
 
+## Optional manual feed cooldown (proposed V3)
+
+The new `queue.min_feed_interval_seconds` option (default **0**, disabled) postpones manual jobs targeting the same configured feed; it does not run a scheduler or background process. `queue-stats` reports only safe numeric counts including ready/delayed jobs. See [feed cooldown notes](docs/RATE_LIMIT_V3.md).
+
 ## Requirements and offline quick start
 
 Python **3.11+** is recommended (the core uses the standard library).

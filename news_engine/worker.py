@@ -1,7 +1,7 @@
 """Explicit, single-job worker. Reuses public ingestion; no scheduled process."""
 from __future__ import annotations
 
-from . import pipeline, queue, sources, store
+from . import pipeline, queue, rate_limit, sources, store
 from .util import iso_now
 
 
@@ -17,14 +17,22 @@ def enqueue_feeds(conn, config: dict, *, batch_id=None) -> int:
 
 
 def work_once(conn, config: dict, *, fetcher=None, now=None) -> dict:
+    settings = config.get("queue", {})
+    interval = settings.get("min_feed_interval_seconds", 0)
+    if isinstance(interval, bool) or not isinstance(interval, int) or not 0 <= interval <= 86400:
+        raise ValueError("queue.min_feed_interval_seconds must be an integer from 0 to 86400")
     job = queue.claim(conn, now=now)
     if job is None:
         return {"status": "empty"}
     try:
         if job["kind"] != "fetch_feed":
             raise ValueError("unrecognized job type")
+        feed = job["payload"]["feed"]
+        if not rate_limit.reserve_or_defer(
+                conn, job["id"], feed["url"], interval_seconds=interval, now=now):
+            return {"status": "deferred", "job_id": job["id"]}
         raw, errors = sources.collect(
-            [job["payload"]["feed"]],
+            [feed],
             cache_get=lambda url: store.get_cache(conn, url),
             cache_put=lambda url, meta: store.put_cache(conn, url, meta),
             fetcher=fetcher)

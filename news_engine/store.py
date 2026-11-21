@@ -51,6 +51,10 @@ CREATE TABLE IF NOT EXISTS jobs (
  created_at REAL NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_jobs_ready ON jobs(status,available_at);
+CREATE TABLE IF NOT EXISTS feed_cooldowns (
+  source_key TEXT PRIMARY KEY,
+  next_allowed_at REAL NOT NULL
+);
 """
 
 
