@@ -1,0 +1,2 @@
+# Optional. Only for explicit `review` command.
+google-genai>=3.2.0,<4

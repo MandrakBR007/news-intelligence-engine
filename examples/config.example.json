@@ -1,0 +1,16 @@
+{
+  "storage": {"path": "news.db"},
+  "dashboard": {"path": "dashboard.html"},
+  "dedup": {"hamming_threshold": 8, "jaccard_threshold": 0.75},
+  "feeds": [
+    {"name": "sample_public_feed", "url": "https://example.org/news.xml", "format": "rss"}
+  ],
+  "topics": [
+    {"id": "economic_data", "keywords": ["inflation", "economic", "employment", "gdp", "prices"]},
+    {"id": "monetary_policy", "keywords": ["central", "bank", "interest", "rates", "policy"]},
+    {"id": "business", "keywords": ["earnings", "revenue", "company", "industry", "business"]}
+  ],
+  "gemini": {"enabled": false, "model": "gemini-decision-1", "api_key_env": "GEMINI_API_KEY"},
+  "queue": {"max_attempts": 3, "retry_delay_seconds": 120},
+  "http": {"host": "127.0.0.1", "port": 8080}
+}
