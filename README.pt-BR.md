@@ -21,6 +21,17 @@ As próximas prioridades estão no [Roteiro V3 em português](docs/ROADMAP_V3.pt
 - Dashboard e API HTTP exclusivamente em loopback.
 - Exemplo opcional de **Gemini Decision 1**, limitado à classificação genérica de temas e invocado manualmente.
 
+## Instalação local opcional (compatível com V2)
+
+No Python 3.11+, é possível instalar o núcleo sem dependências obrigatórias externas:
+
+```bash
+python -m pip install -e .
+news-engine demo --data-dir data
+```
+
+O comando anterior `python -B -m news_engine` continua funcionando. Para a integração opcional e **manual** com IA, use `pip install -e ".[gemini]"`; para ferramentas de desenvolvimento, `pip install -e ".[dev]"`. Consulte as [notas de engenharia](docs/ENGINEERING_V3.md). A instalação não inicia coleta externa nem serviço automático.
+
 ## Começando sem internet
 
 Recomendado Python 3.11+.

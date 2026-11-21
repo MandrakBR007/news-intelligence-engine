@@ -47,14 +47,20 @@ def ack(conn, job_id: int):
     conn.commit()
 
 
-def fail(conn, job_id: int, error: str, *, max_attempts=3, delay_seconds=60, now=None):
+def fail(conn, job_id: int, error: str, *, max_attempts=3, delay_seconds=60,
+         backoff_factor=1, now=None):
+    if not 1 <= backoff_factor <= 10:
+        raise ValueError("backoff_factor must be between 1 and 10")
+    if not 0 <= delay_seconds <= 86400:
+        raise ValueError("delay_seconds must be between 0 and 86400")
     now = time.time() if now is None else now
     row = conn.execute("SELECT attempts FROM jobs WHERE id=? AND status='leased'", (job_id,)).fetchone()
     if row is None:
         return
     status = 'dead' if row['attempts'] >= max_attempts else 'pending'
+    retry_delay = min(86400, delay_seconds * backoff_factor ** min(max(0, row['attempts'] - 1), 20))
     conn.execute("""UPDATE jobs SET status=?,available_at=?,leased_until=NULL,last_error=?
-                    WHERE id=?""", (status, now + delay_seconds, str(error)[:400], job_id))
+                    WHERE id=?""", (status, now + retry_delay, str(error)[:400], job_id))
     conn.commit()
 
 

@@ -1,0 +1,25 @@
+name: Engineering diagnostics
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  engineering:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install local package and developer diagnostics
+        run: python -m pip install -e ".[dev]"
+      - name: Ruff correctness baseline
+        run: python -m ruff check .
+      - name: Offline tests and coverage report (no threshold yet)
+        run: python -m pytest -q --cov=news_engine --cov-report=term-missing
+      - name: MyPy diagnostic (advisory)
+        continue-on-error: true
+        run: python -m mypy news_engine
