@@ -5,7 +5,7 @@ import ipaddress
 import json
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-from . import dashboard, store
+from . import cli_output, dashboard, health, store
 
 
 def make_server(db_path, host: str = "127.0.0.1", port: int = 8080) -> ThreadingHTTPServer:
@@ -33,7 +33,7 @@ def make_server(db_path, host: str = "127.0.0.1", port: int = 8080) -> Threading
             if self.headers.get("Host", "").split(":", 1)[0].lower() not in ("127.0.0.1", "localhost"):
                 self._send(403, "invalid host")
                 return
-            if self.path not in ("/", "/api/stats", "/api/items"):
+            if self.path not in ("/", "/api/stats", "/api/items", "/api/health"):
                 self._send(404, "not found")
                 return
             conn = store.connect(db_path)
@@ -41,6 +41,10 @@ def make_server(db_path, host: str = "127.0.0.1", port: int = 8080) -> Threading
             try:
                 if self.path == "/api/stats":
                     self._send(200, json.dumps(store.stats(conn), ensure_ascii=False),
+                               "application/json; charset=utf-8")
+                elif self.path == "/api/health":
+                    snapshot = cli_output.public_result("health", health.diagnostic_snapshot(conn))
+                    self._send(200, json.dumps(snapshot, ensure_ascii=False),
                                "application/json; charset=utf-8")
                 elif self.path == "/api/items":
                     self._send(200, json.dumps(store.list_items(conn, limit=100), ensure_ascii=False),

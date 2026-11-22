@@ -4,7 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from . import api, cli_output, config as config_mod, dashboard, demo, gemini_client, pipeline, queue, store, worker
+from . import api, cli_output, config as config_mod, dashboard, demo, gemini_client, health, pipeline, queue, store, worker
 
 
 def _open(config, data_dir):
@@ -17,7 +17,7 @@ def _open(config, data_dir):
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(prog="news_engine", description="Public news feed research toolkit")
     sub = parser.add_subparsers(dest="command", required=True)
-    for cmd in ("demo", "collect", "dashboard", "stats", "serve", "enqueue-feeds", "work-once", "queue-stats", "review"):
+    for cmd in ("demo", "collect", "dashboard", "stats", "serve", "enqueue-feeds", "work-once", "queue-stats", "health", "review"):
         p = sub.add_parser(cmd)
         p.add_argument("--data-dir", default="data")
         p.add_argument("--config", default=None, required=cmd in ("collect", "enqueue-feeds", "work-once", "review"))
@@ -53,6 +53,8 @@ def main(argv=None) -> int:
             output = worker.work_once(conn, config)
         elif args.command == "queue-stats":
             output = queue.diagnostics(conn)
+        elif args.command == "health":
+            output = health.diagnostic_snapshot(conn)
         elif args.command == "review":
             if not config["gemini"].get("enabled"):
                 output = {"enabled": False, "reason": "set gemini.enabled=true to opt in"}

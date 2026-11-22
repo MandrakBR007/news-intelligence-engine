@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import os
 
+DEFAULT_TIMEOUT_MS = 15000
+
 PUBLIC_QUESTIONS = {
     "category": {
         "type": "choice",
@@ -35,8 +37,10 @@ def enabled(key_env="GEMINI_API_KEY") -> bool:
 
 
 def review(title: str, summary: str, *, client=None, model="gemini-decision-1",
-           key_env="GEMINI_API_KEY") -> dict:
+           key_env="GEMINI_API_KEY", timeout_ms: int = DEFAULT_TIMEOUT_MS) -> dict:
     """Explicit network operation unless an injected mock is supplied."""
+    if isinstance(timeout_ms, bool) or not isinstance(timeout_ms, int) or not 1000 <= timeout_ms <= 120000:
+        raise ValueError("timeout_ms must be an integer between 1000 and 120000")
     if client is None:
         key = os.environ.get(key_env)
         if not key:
@@ -45,10 +49,15 @@ def review(title: str, summary: str, *, client=None, model="gemini-decision-1",
             from google import genai
         except ImportError as exc:
             return {"enabled": False, "error": f"Install google-genai>=3.2.0: {exc}"}
-        client = genai.Client(api_key=key, http_options={"api_version": "v1beta"})
+        client = genai.Client(api_key=key, http_options={"api_version": "v1beta", "timeout": timeout_ms})
     text = "Public news metadata only. No market-price forecast requested.\n" + (
         "Title: " + str(title)[:600] + "\nSummary: " + str(summary)[:2400])
-    response = client.decisions.create(model=model, input=text, questions=PUBLIC_QUESTIONS)
+    try:
+        response = client.decisions.create(model=model, input=text, questions=PUBLIC_QUESTIONS)
+    except Exception:
+        # API exceptions may include credentials, prompts or raw HTTP responses.
+        # Never surface them in a user-facing result.
+        return {"enabled": False, "reason": "external_review_failed"}
     answers = getattr(response, "answers", {})
     clean = {}
     for name in PUBLIC_QUESTIONS:
