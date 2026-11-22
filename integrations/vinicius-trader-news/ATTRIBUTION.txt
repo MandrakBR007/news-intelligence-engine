@@ -1,0 +1,7 @@
+CONTRIBUTION CREDIT / CRÉDITO DE CONTRIBUIÇÃO
+Vinicius Trader — supplied source package and proposed improvements (attribution as requested by recipient).
+Vinicius Trader — pacote recebido e melhorias propostas (crédito conforme pedido do destinatário).
+
+Original license preserved / Licença original preservada: MIT, Copyright (c) 2026 News Intelligence Engine contributors.
+This credit does not imply exclusive authorship or endorsement by third parties.
+O crédito não implica autoria exclusiva nem endosso de terceiros.

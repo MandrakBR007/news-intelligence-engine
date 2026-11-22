@@ -1,0 +1,45 @@
+VINICIUS TRADER — INTEGRAÇÃO ISOLADA DE COLETA DE NOTÍCIAS
+Especificação técnica | Português (Brasil) | 22/11/2026
+
+1. OBJETIVO E ESCOPO
+Este arquivo contém uma implementação de referência, isolada e sanitizada, recebida para avaliação junto ao News Intelligence Engine. NÃO é atualização automática do projeto principal, nem deve ser descompactado sobre uma instalação existente.
+
+Crédito pelo pacote fornecido e pelas melhorias propostas: Vinicius Trader, conforme informado pelo destinatário. Preservamos a licença MIT e o aviso de direitos autorais originais. O crédito não atribui indevidamente ao colaborador a autoria de todas as partes preexistentes ou de bibliotecas de terceiros.
+
+2. COMPONENTES INCLUÍDOS
+- news_engine/sources.py e feed_parsers.py: coleta explícita de notícias HTTPS RSS/Atom/JSON e normalização.
+- pipeline.py / dedup.py / store.py: hash de conteúdo, deduplicação, proveniência e histórico de revisões SQLite.
+- queue.py / worker.py: fila, tentativas controladas e processamento mediante comando explícito.
+- classifier_preview.py e classificadores: classificação experimental por assunto; NÃO preveem direção do mercado.
+- api.py / dashboard.py: apresentação local HTTP somente leitura, sem credenciais de fornecedores externos.
+- tests/ e examples/: testes locais, exemplos sintéticos e feeds desativados por padrão.
+
+3. SEGURANÇA E SANITIZAÇÃO
+Foram excluídos: banco SQLite de notícias do pacote recebido, dashboard HTML gerado, cliente de IA/LLM de terceiro, instruções para chaves de API, dependências opcionais de LLM, configuração operacional de origem e metadados gerados de instalação. O novo config.json vem com feeds vazios e nenhuma integração de IA externa. Não estão incluídos credenciais, chaves privadas, registros de contas ou conjuntos de dados operacionais de origem.
+Endereços de feeds HTTPS públicos não são credenciais, mas a coleta requer configuração e comando explícitos. Os endpoints locais /api são de consulta e não são APIs de provedores de IA. Uma varredura estática reduz riscos, mas não garante ausência de toda vulnerabilidade.
+Nunca publicar variáveis de ambiente, tokens, senhas, logs, bancos locais, registros de contas nem caminhos privados. Credenciais já expostas em outros lugares devem ser trocadas.
+
+4. CONTRATO DE DADOS E CONSUMO INDEPENDENTE
+O coletor fornece metadados de notícias para análise local e revisão de arquivos. Formato sugerido:
+  NewsRecord = {source_id, external_id, title, summary, published_at,
+                first_seen_at, observed_at, content_hash, publication_time_quality}
+Aplicações consumidoras devem validar independentemente horários, entradas, normalização e condições de uso dos dados. Este pacote não ativa automaticamente qualquer integração posterior. A consulta a feeds externos públicos é opcional e controlada pela configuração.
+
+5. INTEGRIDADE TEMPORAL E QUALIDADE
+published_at é o horário informado pela fonte, não prova de disponibilidade inicial. first_seen_at é a primeira observação pelo coletor; pode ocorrer muito depois na importação de conteúdos antigos. Preservar proveniência, fusos originais ou hipóteses explícitas e histórico de revisões/deduplicação. Categorias temáticas por palavras-chave apenas organizam notícias; não representam validação independente da precisão factual. Análises posteriores exigem verificação específica.
+
+6. INÍCIO RÁPIDO LOCAL / DEMONSTRAÇÃO OFFLINE
+Na pasta extraída:
+  python -B -m news_engine demo --data-dir ./local_demo
+  python -B -m unittest discover -s tests
+Coleta de notícias requer configurar manualmente config.json e executar:
+  python -B -m news_engine collect --config config.json --data-dir ./local_data
+Não execute coleta sem intenção explícita de usar rede. A demonstração cria arquivos sintéticos locais. Para apenas inspecionar sem escrita, use análise estática do código.
+
+7. POLÍTICA DE ISOLAMENTO
+Não sobrescrever o projeto principal. Não incorporar código em produção sem revisão. Tratar esta distribuição como artefato de referência e verificar licença, segurança e condições das fontes antes de reutilização seletiva.
+
+8. CRÉDITO E LICENÇA
+Crédito pelo pacote recebido e melhorias propostas: Vinicius Trader.
+Direitos originais mantidos no LICENSE: (c) 2026 News Intelligence Engine contributors (MIT).
+Sanitização, empacotamento separado e documentação bilíngue: preparados para avaliação segura, sem alterar produção.

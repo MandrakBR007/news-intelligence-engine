@@ -1,0 +1,10 @@
+.git
+.env
+config.json
+data
+logs
+reports
+*.db
+*.key
+*.pem
+dist

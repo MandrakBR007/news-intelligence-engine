@@ -1,0 +1,322 @@
+[
+  {
+    "id": "adv-en-01",
+    "language": "en",
+    "title": "School cafeteria raises lunch prices",
+    "summary": "Parents receive the new menu",
+    "expected_topic": "general",
+    "note": "homonym"
+  },
+  {
+    "id": "adv-en-02",
+    "language": "en",
+    "title": "River bank erosion survey completed",
+    "summary": "Volunteers restored the riverbank",
+    "expected_topic": "general",
+    "note": "homonym"
+  },
+  {
+    "id": "adv-en-03",
+    "language": "en",
+    "title": "City interest in public art grows",
+    "summary": "Museum opens a new gallery",
+    "expected_topic": "general",
+    "note": "homonym"
+  },
+  {
+    "id": "adv-en-04",
+    "language": "en",
+    "title": "Company picnic cancelled by rain",
+    "summary": "Employees attend a volunteer cleanup",
+    "expected_topic": "general",
+    "note": "false-context"
+  },
+  {
+    "id": "adv-en-05",
+    "language": "en",
+    "title": "A bank of clouds crosses the valley",
+    "summary": "Weather service publishes a forecast",
+    "expected_topic": "general",
+    "note": "homonym"
+  },
+  {
+    "id": "adv-en-06",
+    "language": "en",
+    "title": "Historical exhibit explains inflation in ancient empires",
+    "summary": "Museum displays coins from past centuries",
+    "expected_topic": "general",
+    "note": "historical"
+  },
+  {
+    "id": "adv-en-07",
+    "language": "en",
+    "title": "University research examines company culture",
+    "summary": "Scholars study workplace psychology",
+    "expected_topic": "general",
+    "note": "false-context"
+  },
+  {
+    "id": "adv-en-08",
+    "language": "en",
+    "title": "Film titled Monetary Policy wins award",
+    "summary": "Festival announces its program",
+    "expected_topic": "general",
+    "note": "title-mention"
+  },
+  {
+    "id": "adv-en-09",
+    "language": "en",
+    "title": "Payroll survey reports fewer new jobs",
+    "summary": "The national statistics office publishes hiring figures",
+    "expected_topic": "economic_data",
+    "note": "paraphrase"
+  },
+  {
+    "id": "adv-en-10",
+    "language": "en",
+    "title": "Consumer costs rise sharply",
+    "summary": "Official inflation measure reaches a new high",
+    "expected_topic": "economic_data",
+    "note": "data"
+  },
+  {
+    "id": "adv-en-11",
+    "language": "en",
+    "title": "Government revises gross domestic product estimate",
+    "summary": "Statistical agency changes last quarter's total",
+    "expected_topic": "economic_data",
+    "note": "abbreviation"
+  },
+  {
+    "id": "adv-en-12",
+    "language": "en",
+    "title": "Factory output survey signals slowdown",
+    "summary": "Official manufacturing figures released today",
+    "expected_topic": "economic_data",
+    "note": "unseen-synonym"
+  },
+  {
+    "id": "adv-en-13",
+    "language": "en",
+    "title": "Central bank holds benchmark lending rate",
+    "summary": "Monetary committee delays the next decision",
+    "expected_topic": "monetary_policy",
+    "note": "policy"
+  },
+  {
+    "id": "adv-en-14",
+    "language": "en",
+    "title": "Policymakers announce an unexpected rate cut",
+    "summary": "The governor explains the decision",
+    "expected_topic": "monetary_policy",
+    "note": "unseen-synonym"
+  },
+  {
+    "id": "adv-en-15",
+    "language": "en",
+    "title": "Monetary authority leaves rates unchanged",
+    "summary": "Officials publish meeting minutes",
+    "expected_topic": "monetary_policy",
+    "note": "policy"
+  },
+  {
+    "id": "adv-en-16",
+    "language": "en",
+    "title": "Officials deny rumors of an interest rate increase",
+    "summary": "Central bank publishes a statement",
+    "expected_topic": "monetary_policy",
+    "note": "negation-still-topic"
+  },
+  {
+    "id": "adv-en-17",
+    "language": "en",
+    "title": "Retail chain announces quarterly profit",
+    "summary": "The company reports stronger margins",
+    "expected_topic": "business",
+    "note": "earnings"
+  },
+  {
+    "id": "adv-en-18",
+    "language": "en",
+    "title": "Manufacturer posts lower operating income",
+    "summary": "Executives publish annual financial statements",
+    "expected_topic": "business",
+    "note": "unseen-synonym"
+  },
+  {
+    "id": "adv-en-19",
+    "language": "en",
+    "title": "Firm withdraws earlier sales guidance",
+    "summary": "Management updates shareholders",
+    "expected_topic": "business",
+    "note": "company"
+  },
+  {
+    "id": "adv-en-20",
+    "language": "en",
+    "title": "Corporate board approves a merger",
+    "summary": "Shareholders await regulatory review",
+    "expected_topic": "business",
+    "note": "unseen-synonym"
+  },
+  {
+    "id": "adv-pt-01",
+    "language": "pt-BR",
+    "title": "Banco da praça recebe pintura nova",
+    "summary": "Moradores comemoram a reforma da praça",
+    "expected_topic": "general",
+    "note": "homonym"
+  },
+  {
+    "id": "adv-pt-02",
+    "language": "pt-BR",
+    "title": "Museu altera preços dos ingressos",
+    "summary": "A mostra de arte ficará aberta até domingo",
+    "expected_topic": "general",
+    "note": "homonym"
+  },
+  {
+    "id": "adv-pt-03",
+    "language": "pt-BR",
+    "title": "Juros compostos são tema de aula de matemática",
+    "summary": "Professor apresenta exercícios aos alunos",
+    "expected_topic": "general",
+    "note": "educational-context"
+  },
+  {
+    "id": "adv-pt-04",
+    "language": "pt-BR",
+    "title": "Empresa júnior organiza festival de música",
+    "summary": "Estudantes convidam o público para o evento",
+    "expected_topic": "general",
+    "note": "false-context"
+  },
+  {
+    "id": "adv-pt-05",
+    "language": "pt-BR",
+    "title": "Exposição explica a inflação na Roma Antiga",
+    "summary": "Peças arqueológicas fazem parte da mostra",
+    "expected_topic": "general",
+    "note": "historical"
+  },
+  {
+    "id": "adv-pt-06",
+    "language": "pt-BR",
+    "title": "Biblioteca recebe livro chamado Política Monetária",
+    "summary": "A obra integra o acervo cultural",
+    "expected_topic": "general",
+    "note": "title-mention"
+  },
+  {
+    "id": "adv-pt-07",
+    "language": "pt-BR",
+    "title": "Previsão indica tempo firme no litoral",
+    "summary": "Meteorologistas acompanham nuvens",
+    "expected_topic": "general",
+    "note": "out-of-scope"
+  },
+  {
+    "id": "adv-pt-08",
+    "language": "pt-BR",
+    "title": "Pesquisa acadêmica estuda cultura de companhias teatrais",
+    "summary": "Universidade divulga seminário sobre artes",
+    "expected_topic": "general",
+    "note": "homonym"
+  },
+  {
+    "id": "adv-pt-09",
+    "language": "pt-BR",
+    "title": "Instituto oficial informa alta do custo de vida",
+    "summary": "Índice de inflação acelera no mês",
+    "expected_topic": "economic_data",
+    "note": "data"
+  },
+  {
+    "id": "adv-pt-10",
+    "language": "pt-BR",
+    "title": "Levantamento registra queda nas contratações",
+    "summary": "Pesquisa pública traz números do mercado de trabalho",
+    "expected_topic": "economic_data",
+    "note": "paraphrase"
+  },
+  {
+    "id": "adv-pt-11",
+    "language": "pt-BR",
+    "title": "PIB recua no trimestre",
+    "summary": "Órgão de estatística revisa a atividade econômica",
+    "expected_topic": "economic_data",
+    "note": "abbreviation"
+  },
+  {
+    "id": "adv-pt-12",
+    "language": "pt-BR",
+    "title": "Produção industrial registra retração",
+    "summary": "Sondagem oficial detalha o resultado",
+    "expected_topic": "economic_data",
+    "note": "unseen-synonym"
+  },
+  {
+    "id": "adv-pt-13",
+    "language": "pt-BR",
+    "title": "Banco Central mantém taxa básica de juros",
+    "summary": "Comitê divulga comunicado da decisão",
+    "expected_topic": "monetary_policy",
+    "note": "policy"
+  },
+  {
+    "id": "adv-pt-14",
+    "language": "pt-BR",
+    "title": "Autoridade monetária anuncia corte no custo do crédito",
+    "summary": "Dirigentes explicam mudança nas condições financeiras",
+    "expected_topic": "monetary_policy",
+    "note": "policy"
+  },
+  {
+    "id": "adv-pt-15",
+    "language": "pt-BR",
+    "title": "Comitê de política monetária publica ata",
+    "summary": "Membros discutem decisão de juros",
+    "expected_topic": "monetary_policy",
+    "note": "policy"
+  },
+  {
+    "id": "adv-pt-16",
+    "language": "pt-BR",
+    "title": "Banco Central nega aumento imediato da taxa",
+    "summary": "Comunicado oficial esclarece a decisão",
+    "expected_topic": "monetary_policy",
+    "note": "negation-still-topic"
+  },
+  {
+    "id": "adv-pt-17",
+    "language": "pt-BR",
+    "title": "Varejista registra lucro no trimestre",
+    "summary": "Companhia divulga balanço aos investidores",
+    "expected_topic": "business",
+    "note": "earnings"
+  },
+  {
+    "id": "adv-pt-18",
+    "language": "pt-BR",
+    "title": "Fabricante reduz previsão de faturamento",
+    "summary": "Empresa revisa projeções anuais",
+    "expected_topic": "business",
+    "note": "company"
+  },
+  {
+    "id": "adv-pt-19",
+    "language": "pt-BR",
+    "title": "Grupo empresarial anuncia fusão",
+    "summary": "Acionistas avaliam a transação",
+    "expected_topic": "business",
+    "note": "unseen-synonym"
+  },
+  {
+    "id": "adv-pt-20",
+    "language": "pt-BR",
+    "title": "Rede de lojas apresenta receitas recordes",
+    "summary": "Relatório destaca aumento das vendas",
+    "expected_topic": "business",
+    "note": "earnings"
+  }
+]

@@ -1,0 +1,17 @@
+# No published ports or external network; one-shot synthetic demo only.
+services:
+  offline-demo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    network_mode: "none"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 64
+    restart: "no"
+    command: ["demo", "--data-dir", "/tmp/news-data"]
