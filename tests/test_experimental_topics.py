@@ -47,7 +47,7 @@ class ExperimentalTopicTests(unittest.TestCase):
 
     def test_tied_topics_flag_ambiguity_instead_of_inventing_certainty(self):
         result = experimental_topics.classify_experimental(
-            {"title": "Inflation and company earnings", "summary": ""})
+            {"title": "Inflation and revenue", "summary": ""})
         self.assertEqual(result["topic"], "general")
         self.assertEqual(result["status"], "ambiguous")
 
