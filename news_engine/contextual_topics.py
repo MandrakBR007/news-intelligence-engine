@@ -14,6 +14,7 @@ NON_NEWS_CONTEXT = {
         "museum", "exhibition", "gallery", "film", "movie", "festival",
         "museu", "exposicao", "galeria", "filme", "festival", "biblioteca", "library",
         "book titled", "livro chamado", "exhibit", "mostra de arte",
+        "company picnic", "picnic da empresa",
     ),
     "education": (
         "school", "classroom", "lesson", "lecture", "professor", "course",
