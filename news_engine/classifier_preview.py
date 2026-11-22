@@ -6,9 +6,9 @@ matched phrases are returned to callers of this privacy-minimized preview.
 """
 from __future__ import annotations
 
-from . import classify, config, contextual_topics, evidence_topics, experimental_topics
+from . import classify, config, contextual_topics, evidence_topics, experimental_topics, concept_topics
 
-MODES = ("baseline", "multilingual", "contextual", "evidence")
+MODES = ("baseline", "multilingual", "contextual", "evidence", "concepts")
 
 
 def preview(item: dict, *, mode: str, topics=None) -> dict:
@@ -42,6 +42,8 @@ def preview(item: dict, *, mode: str, topics=None) -> dict:
                       else ("topic_ambiguous" if result["status"] == "ambiguous"
                             else "no_multilingual_phrase_match"),
         }
+    if mode == "concepts":
+        return {"mode": mode, **concept_topics.classify_concepts(source)}
     if mode == "evidence":
         return {"mode": mode, **evidence_topics.classify_evidence(source)}
     result = contextual_topics.classify_contextual(source)
