@@ -40,6 +40,14 @@ class IndependentEvaluationTests(unittest.TestCase):
                        "Museum exhibition"):
             self.assertNotIn(secret, serialized)
 
+    def test_baseline_general_remains_a_decision(self):
+        sample = [dict(CASES[0], title="Community garden opens",
+                       summary="", expected_topic="general")]
+        baseline = evaluate(sample)["engines"]["baseline"]
+        self.assertEqual(baseline["matched"], 1)
+        self.assertEqual(baseline["correct"], 1)
+        self.assertEqual(baseline["selective_accuracy"], 1.0)
+
     def test_abstention_not_counted_as_correct(self):
         only_review = [dict(CASES[1], title="Museum exhibition about inflation")]
         result = evaluate(only_review)["engines"]["contextual"]
