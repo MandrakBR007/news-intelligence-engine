@@ -7,7 +7,7 @@ from __future__ import annotations
 from . import classify as classify_mod
 from . import config as config_mod
 from . import dedup, sources, store
-from .util import iso_now, parse_dt
+from .util import iso_now, parse_dt_details
 
 
 def _normalize(item):
@@ -29,17 +29,25 @@ def process_items(conn, config: dict, raw) -> dict:
     for item in items:
         fingerprint = dedup.fingerprint(item)
         cluster, kind = dedup.assign_cluster(fingerprint, existing, hamming_threshold, jaccard_threshold)
-        classified_at = iso_now()
-        classification = classify_mod.classify(item, config.get("topics", []))
         first_seen_at = iso_now()
-        published_at = parse_dt(item.get("published_at"))
+        published_at, quality = parse_dt_details(
+            item.get("published_at"), observed_at=first_seen_at
+        )
+        # Parser-supplied provenance survives its UTC normalization.
+        # Never override a future timestamp flag or accept unknown labels.
+        source_quality = item.get("published_quality")
+        if (published_at is not None and quality != "future_suspect"
+                and source_quality in ("reported_naive_utc", "reported_tz")):
+            quality = source_quality
+        classification = classify_mod.classify(item, config.get("topics", []))
+        classified_at = iso_now()
         rec = {
             "content_hash": fingerprint["content_hash"], "cluster_id": cluster,
             "source": str(item.get("source") or "unknown"),
             "external_id": str(item.get("external_id") or fingerprint["content_hash"]),
             "title": item.get("title"), "summary": item.get("summary"),
             "link": item.get("link"), "published_at": published_at,
-            "published_quality": "reported" if published_at else "missing_or_invalid",
+            "published_quality": quality,
             "first_seen_at": first_seen_at, "ingested_at": first_seen_at,
             "classified_at": classified_at,
             "topic": classification["topic"], "impact": classification["impact"],

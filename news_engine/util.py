@@ -4,17 +4,21 @@ from __future__ import annotations
 import hashlib
 import html
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 
 def iso_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def parse_dt(value) -> str | None:
-    """Return an ISO UTC timestamp or None. Never invent publication times."""
+def parse_dt_details(value, *, observed_at=None) -> tuple[str | None, str]:
+    """Return (UTC date, source-time quality), never inventing publication time.
+
+    Explicit timezone and naive UTC-assumed timestamps are distinguished.
+    A date more than 24 hours ahead of observation is flagged, not discarded.
+    """
     if value is None or str(value).strip() == "":
-        return None
+        return None, "missing_or_invalid"
     if isinstance(value, datetime):
         dt = value
     else:
@@ -26,12 +30,23 @@ def parse_dt(value) -> str | None:
             try:
                 dt = datetime.fromisoformat(text.replace("Z", "+00:00"))
             except (ValueError, TypeError):
-                return None
+                return None, "missing_or_invalid"
+    quality = "reported_naive_utc" if dt.tzinfo is None else "reported_tz"
     if dt.tzinfo is None:
-        # Assumption: missing timezone means UTC, flagged by the caller if needed.
         dt = dt.replace(tzinfo=timezone.utc)
-    return dt.astimezone(timezone.utc).isoformat()
+    utc_dt = dt.astimezone(timezone.utc)
+    if observed_at is not None:
+        observed = parse_dt(observed_at)
+        if observed is not None:
+            observed_dt = datetime.fromisoformat(observed)
+            if utc_dt > observed_dt + timedelta(days=1):
+                quality = "future_suspect"
+    return utc_dt.isoformat(), quality
 
+
+def parse_dt(value) -> str | None:
+    """Compatibility API: return only normalized ISO UTC or None."""
+    return parse_dt_details(value)[0]
 
 def normalize_text(text) -> str:
     text = re.sub(r"<[^>]+>", " ", str(text or ""))

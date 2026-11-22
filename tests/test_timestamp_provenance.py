@@ -52,8 +52,9 @@ class TimestampProvenanceTests(unittest.TestCase):
             self.assertEqual(row["published_quality"], "missing_or_invalid")
             self.assertEqual(row["first_seen_at"], row["ingested_at"])
             self.assertNotEqual(row["first_seen_at"], row["classified_at"])
-        self.assertEqual(rows[0]["classified_at"], "2026-03-01T12:00:01+00:00")
-        self.assertEqual(rows[0]["first_seen_at"], "2026-03-01T12:00:02+00:00")
+        self.assertEqual(rows[0]["first_seen_at"], "2026-03-01T12:00:01+00:00")
+        self.assertEqual(rows[0]["classified_at"], "2026-03-01T12:00:02+00:00")
+        self.assertLessEqual(rows[0]["ingested_at"], rows[0]["classified_at"])
         self.assertEqual(store.stats(self.conn)["unknown_publication_time"], 2)
 
     def test_reported_timestamp_converts_timezone_without_substitution(self):
@@ -64,7 +65,7 @@ class TimestampProvenanceTests(unittest.TestCase):
                      "2026-04-03T09:45:00-03:00")])
         row = self.rows("items")[0]
         self.assertEqual(row["published_at"], "2026-04-03T12:45:00+00:00")
-        self.assertEqual(row["published_quality"], "reported")
+        self.assertEqual(row["published_quality"], "reported_tz")
         self.assertEqual(row["first_seen_at"], "2026-04-03T18:00:00+00:00")
         self.assertEqual(row["ingested_at"], row["first_seen_at"])
         self.assertEqual(store.stats(self.conn)["unknown_publication_time"], 0)
