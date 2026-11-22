@@ -1,0 +1,45 @@
+VINICIUS TRADER — ISOLATED NEWS COLLECTION INTEGRATION
+Technical specification | English | 2026-11-22
+
+1. PURPOSE AND SCOPE
+This archive is an independently packaged, sanitized reference implementation supplied for evaluation alongside the News Intelligence Engine. It is NOT a patch for the host project. It MUST NOT be unpacked over an existing deployment or made an automatic production dependency.
+
+Source-package contribution and proposed improvements are credited to Vinicius Trader as requested by the recipient. The original MIT copyright notice and license are retained. Attribution does not assert ownership of third-party libraries or claim authorship of every pre-existing component.
+
+2. COMPONENTS INCLUDED
+- news_engine/sources.py and feed_parsers.py: explicitly invoked HTTPS RSS/Atom/JSON acquisition and normalization.
+- pipeline.py / dedup.py / store.py: content hashing, near-duplicate grouping, SQLite source metadata and item revisions.
+- queue.py / worker.py: explicit single-step ingestion and retry workflow.
+- classifier_preview.py and classifiers: exploratory document-topic categorization, NOT market-direction prediction.
+- api.py / dashboard.py: locally bound read-only HTTP presentation interface (no third-party API credentials).
+- tests/ and examples/: local tests, synthetic sample data and disabled-by-default feed configuration.
+
+3. SECURITY AND SANITIZATION
+Removed from the distributed version: original SQLite news database, generated dashboard HTML, third-party AI/LLM provider client and API-key instructions, optional LLM SDK dependencies, pre-existing runtime configuration and generated package metadata. Current config.json contains NO configured news feeds and NO external AI integration. There are no bundled credentials, private keys, stored account data or original runtime datasets.
+Public HTTPS feed URLs are NOT equivalent to secrets, but outbound news acquisition still requires manual configuration and explicit invocation. Local /api endpoints are read-only and not AI provider APIs. Static scans are defense-in-depth, not a guarantee that all security vulnerabilities have been excluded.
+Never commit environment variables, access tokens, passwords, logs, local SQLite databases, account records or machine-specific paths. Rotate any credential if it was previously exposed elsewhere.
+
+4. DATA CONTRACT AND INDEPENDENT CONSUMPTION
+The collector supplies news-item metadata for local analysis and archival review. A proposed record format is:
+  NewsRecord = {source_id, external_id, title, summary, published_at,
+                first_seen_at, observed_at, content_hash, publication_time_quality}
+Consumer applications must validate timestamps, inputs, normalization and data usage independently. This package has no automatically enabled downstream integration. Public external news retrieval is opt-in and controlled by the feed configuration.
+
+5. TEMPORAL INTEGRITY AND QUALITY
+published_at is source-reported publication time, not proof of initial availability. first_seen_at is when the collector first observed the item; it may be substantially later for archived content. Retain source provenance, preserve original time zones or explicit assumptions, and distinguish duplicate revisions. Word-based topic categories are organizational labels, not independent verification of factual accuracy. Validate downstream analytical claims separately.
+
+6. READ-ONLY / OFFLINE QUICK START
+From this extracted folder:
+  python -B -m news_engine demo --data-dir ./local_demo
+  python -B -m unittest discover -s tests
+Optional news collection requires explicit editing of config.json and:
+  python -B -m news_engine collect --config config.json --data-dir ./local_data
+Do not run the collection command unless network access is intended. Demo creates local synthetic files. For a zero-write inspection of the code, run only Python AST parsing or offline scanners.
+
+7. ISOLATION POLICY
+Do not overwrite the existing news-intelligence-engine repository. Do not merge code into production implicitly. Treat this distribution as a vendor/reference artifact; conduct code review, license review and dataset-permission review before selective adoption.
+
+8. CREDIT AND LICENSE
+Source-package contribution / improvement credit: Vinicius Trader.
+Original copyright preserved in LICENSE: (c) 2026 News Intelligence Engine contributors (MIT).
+Sanitization, isolated packaging and bilingual documentation: prepared for safe evaluation, without changing production behavior.

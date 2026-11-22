@@ -1,0 +1,81 @@
+services:
+  dashboard:
+    image: news-intelligence-engine:local
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    command:
+      - serve
+      - --config
+      - /config/config.json
+      - --data-dir
+      - /data
+      - --host
+      - 0.0.0.0
+      - --allow-container-bind
+    ports:
+      - "127.0.0.1:${NEWS_ENGINE_PORT:-8081}:8080"
+    volumes:
+      - type: bind
+        source: ./config.json
+        target: /config/config.json
+        read_only: true
+      - news-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 64
+    restart: unless-stopped
+    networks:
+      - dashboard-network
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/health', timeout=2).read()"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  collector:
+    image: news-intelligence-engine:local
+    profiles:
+      - collect
+    command:
+      - collect
+      - --config
+      - /config/config.json
+      - --data-dir
+      - /data
+    volumes:
+      - type: bind
+        source: ./config.json
+        target: /config/config.json
+        read_only: true
+      - news-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 64
+    restart: "no"
+    networks:
+      - feed-egress
+
+volumes:
+  news-data:
+
+networks:
+  dashboard-network:
+    driver: bridge
+  feed-egress:
+    driver: bridge

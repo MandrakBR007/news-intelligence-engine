@@ -1,0 +1,49 @@
+{
+  "storage": {
+    "path": "news.db"
+  },
+  "dashboard": {
+    "path": "dashboard.html"
+  },
+  "dedup": {
+    "hamming_threshold": 8,
+    "jaccard_threshold": 0.75
+  },
+  "feeds": [],
+  "topics": [
+    {
+      "id": "economic_data",
+      "keywords": [
+        "inflation",
+        "employment",
+        "gdp",
+        "prices"
+      ]
+    },
+    {
+      "id": "monetary_policy",
+      "keywords": [
+        "central",
+        "bank",
+        "interest",
+        "rates"
+      ]
+    },
+    {
+      "id": "business",
+      "keywords": [
+        "earnings",
+        "revenue",
+        "company"
+      ]
+    }
+  ],
+  "queue": {
+    "max_attempts": 3,
+    "retry_delay_seconds": 120
+  },
+  "http": {
+    "host": "127.0.0.1",
+    "port": 8080
+  }
+}

@@ -1,0 +1,162 @@
+[
+  {
+    "id": "hold-en-econ-prices",
+    "language": "en",
+    "title": "Statistical office publishes consumer price index",
+    "summary": "Annual prices continue rising",
+    "expected_topic": "economic_data",
+    "note": "economic statistics"
+  },
+  {
+    "id": "hold-en-econ-employment",
+    "language": "en",
+    "title": "Employment survey details hiring",
+    "summary": "Economic growth and GDP data released",
+    "expected_topic": "economic_data",
+    "note": "baseline explicit"
+  },
+  {
+    "id": "hold-en-policy-rate",
+    "language": "en",
+    "title": "Central bank changes policy rate",
+    "summary": "Interest rates held after committee vote",
+    "expected_topic": "monetary_policy",
+    "note": "specific policy context"
+  },
+  {
+    "id": "hold-en-policy-authority",
+    "language": "en",
+    "title": "Monetary authority releases a statement",
+    "summary": "Borrowing costs are reviewed",
+    "expected_topic": "monetary_policy",
+    "note": "synonym generalization"
+  },
+  {
+    "id": "hold-en-business-sales",
+    "language": "en",
+    "title": "Retailer reports quarterly sales",
+    "summary": "Store results expand across the region",
+    "expected_topic": "business",
+    "note": "business synonym"
+  },
+  {
+    "id": "hold-en-business-earnings",
+    "language": "en",
+    "title": "Company reports earnings",
+    "summary": "Revenue and industry results increase",
+    "expected_topic": "business",
+    "note": "baseline explicit"
+  },
+  {
+    "id": "hold-en-general-medical",
+    "language": "en",
+    "title": "Researchers describe a new microscope",
+    "summary": "University laboratory publishes findings",
+    "expected_topic": "general",
+    "note": "out of scope"
+  },
+  {
+    "id": "hold-en-general-rate",
+    "language": "en",
+    "title": "Local library announces new rates for room rentals",
+    "summary": "Opening hours unchanged",
+    "expected_topic": "general",
+    "note": "false positive challenge"
+  },
+  {
+    "id": "hold-en-general-bank",
+    "language": "en",
+    "title": "River bank restoration begins",
+    "summary": "Volunteers protect coastal habitat",
+    "expected_topic": "general",
+    "note": "lexical ambiguity"
+  },
+  {
+    "id": "hold-en-cross-topic",
+    "language": "en",
+    "title": "Company publishes economic data",
+    "summary": "Industry business review",
+    "expected_topic": "business",
+    "note": "ambiguous reference"
+  },
+  {
+    "id": "hold-pt-econ-precos",
+    "language": "pt-BR",
+    "title": "Índice de preços divulgado",
+    "summary": "Relatório de inflação e atividade econômica",
+    "expected_topic": "economic_data",
+    "note": "accent normalization"
+  },
+  {
+    "id": "hold-pt-econ-emprego",
+    "language": "pt-BR",
+    "title": "Dados econômicos de emprego",
+    "summary": "Produto interno bruto revisado",
+    "expected_topic": "economic_data",
+    "note": "Portuguese economic synonym"
+  },
+  {
+    "id": "hold-pt-policy-banco",
+    "language": "pt-BR",
+    "title": "Banco Central comunica decisão monetária",
+    "summary": "Juros permanecem estáveis",
+    "expected_topic": "monetary_policy",
+    "note": "Portuguese policy"
+  },
+  {
+    "id": "hold-pt-policy-taxa",
+    "language": "pt-BR",
+    "title": "Autoridade monetária ajusta taxa básica",
+    "summary": "Comitê explica medida",
+    "expected_topic": "monetary_policy",
+    "note": "Portuguese phrase"
+  },
+  {
+    "id": "hold-pt-business-receita",
+    "language": "pt-BR",
+    "title": "Empresa divulga receita",
+    "summary": "Faturamento e lucro operacional",
+    "expected_topic": "business",
+    "note": "Portuguese company earnings"
+  },
+  {
+    "id": "hold-pt-business-vendas",
+    "language": "pt-BR",
+    "title": "Companhia anuncia vendas",
+    "summary": "Resultados trimestrais publicados",
+    "expected_topic": "business",
+    "note": "Portuguese corporate"
+  },
+  {
+    "id": "hold-pt-general-banco",
+    "language": "pt-BR",
+    "title": "Banco de praça recebe restauração",
+    "summary": "Prefeitura reforma área verde",
+    "expected_topic": "general",
+    "note": "bank homonym challenge"
+  },
+  {
+    "id": "hold-pt-general-taxas",
+    "language": "pt-BR",
+    "title": "Museu anuncia taxas de visitação",
+    "summary": "Exposição abre neste mês",
+    "expected_topic": "general",
+    "note": "rates homonym challenge"
+  },
+  {
+    "id": "hold-pt-general-saude",
+    "language": "pt-BR",
+    "title": "Pesquisadores anunciam estudo de saúde",
+    "summary": "Universidade divulga observações",
+    "expected_topic": "general",
+    "note": "out of scope"
+  },
+  {
+    "id": "hold-pt-cross-topic",
+    "language": "pt-BR",
+    "title": "Empresa comenta inflação",
+    "summary": "Companhia apresenta resultados trimestrais",
+    "expected_topic": "business",
+    "note": "ambiguous reference"
+  }
+]
