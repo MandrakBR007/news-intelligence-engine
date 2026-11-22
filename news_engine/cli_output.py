@@ -97,6 +97,16 @@ def public_result(command, value):
         return _stats(value)
     if command == "queue-stats":
         return _counts(value, _QUEUE_FIELDS)
+    if command == "health":
+        return {
+            "status": "ok" if value.get("status") == "ok" else "unknown",
+            **_counts(value, ("items", "feed_cache_entries", "feeds_with_unexpected_status")),
+            "last_feed_check_at": _label(value["last_feed_check_at"], 40)
+                if isinstance(value.get("last_feed_check_at"), str) else None,
+            "last_item_observed_at": _label(value["last_item_observed_at"], 40)
+                if isinstance(value.get("last_item_observed_at"), str) else None,
+            "queue": _counts(value.get("queue"), _QUEUE_FIELDS),
+        }
     if command == "enqueue-feeds":
         return {"added": _counts(value, ("added",)).get("added", 0),
                 "queue": _counts(value.get("queue"), _QUEUE_FIELDS)}
