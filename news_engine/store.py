@@ -85,7 +85,7 @@ def _signed64(value):
     return value - (1 << 64) if value >= (1 << 63) else value
 
 
-def insert_item(conn, rec: dict) -> int:
+def insert_item(conn, rec: dict, *, commit: bool = True) -> int:
     simhash = _signed64(rec.get("simhash"))
     cur = conn.execute(
         """INSERT OR IGNORE INTO items(content_hash,cluster_id,source,external_id,title,summary,
@@ -97,18 +97,20 @@ def insert_item(conn, rec: dict) -> int:
          rec.get("published_at"), rec.get("first_seen_at"), rec.get("topic"),
          rec.get("impact"), rec.get("confidence"), rec.get("status"), simhash,
          rec.get("published_quality"), rec.get("ingested_at"), rec.get("classified_at")))
-    conn.commit()
+    if commit:
+        conn.commit()
     return cur.rowcount
 
 
-def add_revision(conn, rec: dict) -> bool:
+def add_revision(conn, rec: dict, *, commit: bool = True) -> bool:
     """Keep each source ID's distinct content version, even across repeated runs."""
     cur = conn.execute(
         """INSERT OR IGNORE INTO item_revisions
            (source,external_id,content_hash,title,summary,observed_at) VALUES(?,?,?,?,?,?)""",
         (rec.get("source", ""), rec.get("external_id", ""), rec["content_hash"],
          rec.get("title"), rec.get("summary"), rec.get("first_seen_at")))
-    conn.commit()
+    if commit:
+        conn.commit()
     return bool(cur.rowcount)
 
 
