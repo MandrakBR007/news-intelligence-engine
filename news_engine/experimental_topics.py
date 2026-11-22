@@ -9,7 +9,6 @@ import re
 import unicodedata
 from collections import Counter
 
-from . import config
 from .util import normalize_text
 
 # Phrases are matched as contiguous normalized tokens, never substrings.
