@@ -10,7 +10,7 @@ of headlines, not real-news accuracy, and not the correctness of a claim.
 From repository root with Python 3.11+, without internet or API keys:
 
 ```sh
-python -B tools/benchmark_topics.py
+python -B -m tools.benchmark_topics
 python -B -m unittest discover -s tests -v
 ```
 
