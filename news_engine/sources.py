@@ -122,10 +122,12 @@ def fetch_feed(url: str, timeout: float = 12, max_bytes: int = MAX_RESPONSE_BYTE
 
     for index, ip in enumerate(addresses):
         connection = None
+        response_received = False
         try:
             connection = factory(host, ip, float(timeout))
             connection.request("GET", path, headers=headers)
             resp = connection.getresponse()
+            response_received = True
             status = int(resp.status)
             meta = {
                 "status": status,
@@ -142,8 +144,9 @@ def fetch_feed(url: str, timeout: float = 12, max_bytes: int = MAX_RESPONSE_BYTE
                 raise FeedSecurityError("response exceeds configured size limit")
             return data, meta
         except OSError as exc:
-            # TLS validation errors must fail closed, without IP fallback.
-            if isinstance(exc, ssl.SSLError) or index == len(addresses) - 1:
+            # Retry only connection/transport errors before an HTTP response exists.
+            # TLS authentication, HTTP responses and body-read failures fail closed.
+            if isinstance(exc, ssl.SSLError) or response_received or index == len(addresses) - 1:
                 raise
         finally:
             if connection is not None:
