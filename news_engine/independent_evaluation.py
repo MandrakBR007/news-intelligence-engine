@@ -43,6 +43,9 @@ def evaluate(cases: list[dict]) -> dict:
         for mode in MODES:
             result = preview(source, mode=mode)
             status, topic = result["status"], result["topic"]
+            # Baseline general is an actual decision, unlike an experimental abstention.
+            if mode == "baseline" and status == "unmatched" and topic == "general":
+                status = "matched"
             stats = totals[mode]
             grouped[language][mode]["total"] += 1
             if status == "matched":
