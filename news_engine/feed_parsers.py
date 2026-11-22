@@ -9,7 +9,7 @@ import json
 import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass
 
-from .util import normalize_text, parse_dt, sha256_hex
+from .util import normalize_text, parse_dt_details, sha256_hex
 
 MAX_RESPONSE_BYTES = 2_000_000
 MAX_ITEMS = 500
@@ -25,6 +25,7 @@ class FeedItem:
     summary: str
     link: str
     published_at: str | None
+    published_quality: str | None = None
 
     def as_dict(self) -> dict:
         return asdict(self)
@@ -57,7 +58,9 @@ def parse_rss(xml_bytes: bytes, source: str) -> list[FeedItem]:
             summary = normalize_text(_plain(node, atom + "summary") or _plain(node, atom + "content"))
             ext_id = _plain(node, atom + "id") or link or sha256_hex(title + summary)
             timestamp = _plain(node, atom + "published") or _plain(node, atom + "updated")
-            out.append(FeedItem(source, ext_id, title, summary, link, parse_dt(timestamp)))
+            published_at, quality = parse_dt_details(timestamp)
+            out.append(FeedItem(source, ext_id, title, summary, link,
+                                published_at, quality))
         return out
     channel = root.find("channel") if root.tag.lower().endswith("rss") else root
     out = []
@@ -73,7 +76,9 @@ def parse_rss(xml_bytes: bytes, source: str) -> list[FeedItem]:
         ext_id = _plain(node, "guid") or link or sha256_hex(title + summary)
         timestamp = (_plain(node, "pubDate") or _plain(node, "published")
                      or _plain(node, DC_DATE))
-        out.append(FeedItem(source, ext_id, title, summary, link, parse_dt(timestamp)))
+        published_at, quality = parse_dt_details(timestamp)
+        out.append(FeedItem(source, ext_id, title, summary, link,
+                            published_at, quality))
     return out
 
 
@@ -104,8 +109,9 @@ def parse_json_list(raw: bytes, source: str, *, list_key: str = "items",
         summary = normalize_text(field(row, "summary"))
         link = str(field(row, "link"))
         ext_id = str(field(row, "external_id") or link or sha256_hex(title + summary))
+        published_at, quality = parse_dt_details(field(row, "published_at"))
         result.append(FeedItem(source, ext_id, title, summary, link,
-                               parse_dt(field(row, "published_at"))))
+                               published_at, quality))
     return result
 
 
