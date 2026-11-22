@@ -78,6 +78,25 @@ class PinnedHTTPSConnection(http.client.HTTPSConnection):
             raise
 
 
+def _safe_cache_header(value: str | None) -> str | None:
+    """Accept bounded, single-line ASCII HTTP validator values only."""
+    if not isinstance(value, str) or not value or len(value) > 200:
+        return None
+    if any(ord(char) < 32 or ord(char) > 126 for char in value):
+        return None
+    return value
+
+
+def _content_length(response, max_bytes: int) -> None:
+    value = response.getheader("Content-Length")
+    if value is None:
+        return
+    if not isinstance(value, str) or not re.fullmatch(r"[0-9]+", value.strip()):
+        raise FeedSecurityError("invalid Content-Length")
+    if int(value.strip()) > max_bytes:
+        raise FeedSecurityError("response exceeds configured size limit")
+
+
 def fetch_feed(url: str, timeout: float = 12, max_bytes: int = MAX_RESPONSE_BYTES,
                etag: str | None = None, modified: str | None = None,
                connection_factory=None) -> tuple[bytes | None, dict]:
@@ -86,34 +105,50 @@ def fetch_feed(url: str, timeout: float = 12, max_bytes: int = MAX_RESPONSE_BYTE
     The optional factory is for local no-network tests; never taken from feed input.
     """
     host, path = validate_url(url)
+    # Never retry a response-status, certificate, parser, or header validation error.
+    # Only transport failures may advance to another previously validated public IP.
     addresses = _public_addresses(host) if connection_factory is None else ["fixture-ip"]
     factory = connection_factory or PinnedHTTPSConnection
-    connection = factory(host, addresses[0], float(timeout))
-    headers = {"User-Agent": USER_AGENT, "Accept": "application/rss+xml, application/atom+xml, application/xml, application/json, text/xml"}
-    if etag:
-        headers["If-None-Match"] = etag[:200]
-    if modified:
-        headers["If-Modified-Since"] = modified[:200]
-    try:
-        connection.request("GET", path, headers=headers)
-        resp = connection.getresponse()
-        status = int(resp.status)
-        meta = {"status": status, "etag": resp.getheader("ETag"),
-                "last_modified": resp.getheader("Last-Modified")}
-        if status == 304:
-            return None, meta
-        if status != 200:
-            # Includes all redirects; refuse them, even across seemingly safe hosts.
-            raise FeedSecurityError(f"HTTP response rejected: {status}")
-        if int(resp.getheader("Content-Length") or "0") > max_bytes:
-            raise FeedSecurityError("response exceeds configured size limit")
-        data = resp.read(max_bytes + 1)
-        if len(data) > max_bytes:
-            raise FeedSecurityError("response exceeds configured size limit")
-        return data, meta
-    finally:
-        connection.close()
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "application/rss+xml, application/atom+xml, application/xml, application/json, text/xml",
+    }
+    safe_etag = _safe_cache_header(etag)
+    safe_modified = _safe_cache_header(modified)
+    if safe_etag:
+        headers["If-None-Match"] = safe_etag
+    if safe_modified:
+        headers["If-Modified-Since"] = safe_modified
 
+    for index, ip in enumerate(addresses):
+        connection = None
+        try:
+            connection = factory(host, ip, float(timeout))
+            connection.request("GET", path, headers=headers)
+            resp = connection.getresponse()
+            status = int(resp.status)
+            meta = {
+                "status": status,
+                "etag": _safe_cache_header(resp.getheader("ETag")),
+                "last_modified": _safe_cache_header(resp.getheader("Last-Modified")),
+            }
+            if status == 304:
+                return None, meta
+            if status != 200:
+                raise FeedSecurityError(f"HTTP response rejected: {status}")
+            _content_length(resp, max_bytes)
+            data = resp.read(max_bytes + 1)
+            if len(data) > max_bytes:
+                raise FeedSecurityError("response exceeds configured size limit")
+            return data, meta
+        except OSError as exc:
+            # TLS validation errors must fail closed, without IP fallback.
+            if isinstance(exc, ssl.SSLError) or index == len(addresses) - 1:
+                raise
+        finally:
+            if connection is not None:
+                connection.close()
+    raise FeedSecurityError("no validated address available")
 
 def collect(feeds, *, cache_get=None, cache_put=None, fetcher=None) -> tuple[list[FeedItem], list[dict]]:
     """Retrieve configured public feeds; unchanged HTTP 304 is not an error."""
