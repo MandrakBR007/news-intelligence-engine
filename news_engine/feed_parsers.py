@@ -13,6 +13,8 @@ from .util import normalize_text, parse_dt, sha256_hex
 
 MAX_RESPONSE_BYTES = 2_000_000
 MAX_ITEMS = 500
+DC_DATE = "{http://purl.org/dc/elements/1.1/}date"
+CONTENT_ENCODED = "{http://purl.org/rss/1.0/modules/content/}encoded"
 
 
 @dataclass
@@ -66,9 +68,11 @@ def parse_rss(xml_bytes: bytes, source: str) -> list[FeedItem]:
         if not title:
             continue
         link = _plain(node, "link")
-        summary = normalize_text(_plain(node, "description") or _plain(node, "summary"))
+        summary = normalize_text(_plain(node, "description") or _plain(node, "summary")
+                                 or _plain(node, CONTENT_ENCODED))
         ext_id = _plain(node, "guid") or link or sha256_hex(title + summary)
-        timestamp = _plain(node, "pubDate") or _plain(node, "published")
+        timestamp = (_plain(node, "pubDate") or _plain(node, "published")
+                     or _plain(node, DC_DATE))
         out.append(FeedItem(source, ext_id, title, summary, link, parse_dt(timestamp)))
     return out
 
@@ -79,12 +83,17 @@ def parse_json_list(raw: bytes, source: str, *, list_key: str = "items",
     if len(raw) > MAX_RESPONSE_BYTES:
         raise ValueError("feed too large")
     data = json.loads(raw)
+    if not isinstance(data, (list, dict)):
+        raise ValueError("JSON root must be an object or array")
     records = data if isinstance(data, list) else data.get(list_key, [])
     if not isinstance(records, list):
         raise ValueError("JSON list_key did not locate an array")
     fields = fields or {}
     def field(row, key):
-        return row.get(fields.get(key, key)) or ""
+        value = row.get(fields.get(key, key))
+        # This generic adapter handles flat JSON metadata only.
+        # Never stringify nested objects into headline or provenance fields.
+        return value if isinstance(value, (str, int, float)) and not isinstance(value, bool) else ""
     result = []
     for row in records[:MAX_ITEMS]:
         if not isinstance(row, dict):
