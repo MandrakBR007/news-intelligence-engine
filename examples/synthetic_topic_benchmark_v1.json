@@ -1,0 +1,170 @@
+[
+  {
+    "id": "en-economic-inflation",
+    "language": "en",
+    "title": "Synthetic inflation prices report",
+    "summary": "Economic data published",
+    "expected_topic": "economic_data",
+    "note": "explicit keywords"
+  },
+  {
+    "id": "en-economic-jobs",
+    "language": "en",
+    "title": "Employment data report",
+    "summary": "GDP figures revised",
+    "expected_topic": "economic_data",
+    "note": "explicit keywords"
+  },
+  {
+    "id": "en-economic-unseen",
+    "language": "en",
+    "title": "Consumer price index released",
+    "summary": "New statistical bulletin",
+    "expected_topic": "economic_data",
+    "note": "synonym mismatch challenge"
+  },
+  {
+    "id": "en-policy-bank",
+    "language": "en",
+    "title": "Central bank policy meeting",
+    "summary": "Interest rates discussed",
+    "expected_topic": "monetary_policy",
+    "note": "explicit keywords"
+  },
+  {
+    "id": "en-policy-decision",
+    "language": "en",
+    "title": "Central bank announces rates",
+    "summary": "Policy committee convenes",
+    "expected_topic": "monetary_policy",
+    "note": "explicit keywords"
+  },
+  {
+    "id": "en-policy-synonym",
+    "language": "en",
+    "title": "Monetary authority adjusts borrowing costs",
+    "summary": "Officials discuss financing conditions",
+    "expected_topic": "monetary_policy",
+    "note": "synonym mismatch challenge"
+  },
+  {
+    "id": "en-business-earnings",
+    "language": "en",
+    "title": "Company earnings update",
+    "summary": "Revenue expands",
+    "expected_topic": "business",
+    "note": "explicit keywords"
+  },
+  {
+    "id": "en-business-industry",
+    "language": "en",
+    "title": "Industry business bulletin",
+    "summary": "Company releases a statement",
+    "expected_topic": "business",
+    "note": "explicit keywords"
+  },
+  {
+    "id": "en-business-synonym",
+    "language": "en",
+    "title": "Retailer publishes quarterly sales",
+    "summary": "Management presents store results",
+    "expected_topic": "business",
+    "note": "synonym mismatch challenge"
+  },
+  {
+    "id": "en-general-science",
+    "language": "en",
+    "title": "Researchers map a distant comet",
+    "summary": "A telescope records observations",
+    "expected_topic": "general",
+    "note": "out of scope"
+  },
+  {
+    "id": "en-general-library",
+    "language": "en",
+    "title": "Community library extends opening hours",
+    "summary": "Visitors welcome",
+    "expected_topic": "general",
+    "note": "out of scope"
+  },
+  {
+    "id": "en-ambiguous",
+    "language": "en",
+    "title": "Central bank releases economic data",
+    "summary": "Policy and inflation mentioned together",
+    "expected_topic": "monetary_policy",
+    "note": "subjective gold label; multiple plausible topics"
+  },
+  {
+    "id": "pt-economic-inflacao",
+    "language": "pt-BR",
+    "title": "Boletim de inflação divulgado",
+    "summary": "Índice de preços ao consumidor",
+    "expected_topic": "economic_data",
+    "note": "Portuguese terminology"
+  },
+  {
+    "id": "pt-economic-emprego",
+    "language": "pt-BR",
+    "title": "Relatório de emprego e atividade",
+    "summary": "Dados do produto interno bruto",
+    "expected_topic": "economic_data",
+    "note": "Portuguese terminology"
+  },
+  {
+    "id": "pt-policy-juros",
+    "language": "pt-BR",
+    "title": "Banco central altera juros",
+    "summary": "Comitê publica decisão monetária",
+    "expected_topic": "monetary_policy",
+    "note": "Portuguese terminology"
+  },
+  {
+    "id": "pt-policy-taxa",
+    "language": "pt-BR",
+    "title": "Autoridade monetária anuncia taxa básica",
+    "summary": "Decisão do comitê sobre crédito",
+    "expected_topic": "monetary_policy",
+    "note": "Portuguese terminology"
+  },
+  {
+    "id": "pt-business-resultados",
+    "language": "pt-BR",
+    "title": "Empresa anuncia resultados trimestrais",
+    "summary": "Faturamento da indústria aumenta",
+    "expected_topic": "business",
+    "note": "Portuguese terminology"
+  },
+  {
+    "id": "pt-business-receita",
+    "language": "pt-BR",
+    "title": "Companhia divulga receita",
+    "summary": "Vendas e lucro operacional",
+    "expected_topic": "business",
+    "note": "Portuguese terminology"
+  },
+  {
+    "id": "pt-general-museu",
+    "language": "pt-BR",
+    "title": "Museu inaugura exposição de cerâmica",
+    "summary": "Entrada gratuita neste sábado",
+    "expected_topic": "general",
+    "note": "out of scope"
+  },
+  {
+    "id": "pt-general-meteorologia",
+    "language": "pt-BR",
+    "title": "Previsão anuncia chuva na costa",
+    "summary": "Observatório publica boletim",
+    "expected_topic": "general",
+    "note": "out of scope"
+  },
+  {
+    "id": "pt-ambiguous",
+    "language": "pt-BR",
+    "title": "Banco central divulga relatório de preços",
+    "summary": "Decisão da taxa e indicadores",
+    "expected_topic": "monetary_policy",
+    "note": "subjective gold label; multiple plausible topics"
+  }
+]
